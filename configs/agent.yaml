@@ -1,0 +1,89 @@
+# Argus Agent Configuration
+agent:
+  # Unique agent identifier (auto-generated if empty)
+  id: ""
+  
+  # Server connection
+  server:
+    addr: "server.example.com:8443"
+    
+    # TLS configuration
+    tls:
+      enabled: true
+      ca_cert: "certs/ca.crt"
+      client_cert: "certs/agent.crt"
+      client_key: "certs/agent.key"
+      insecure_skip_verify: false
+  
+  # Connection settings
+  connection:
+    heartbeat_interval: "30s"
+    reconnect_interval: "10s"
+    reconnect_max_attempts: 0  # 0 = unlimited
+    connect_timeout: "30s"
+    
+  # Agent labels for grouping/targeting
+  labels:
+    environment: "production"
+    datacenter: "us-east-1"
+    role: "webserver"
+    
+  # Enabled capabilities
+  capabilities:
+    - "execute"
+    - "file_transfer"
+    - "system_info"
+    - "process_list"
+    - "process_kill"
+    - "service_manage"
+    - "shell_session"
+    
+  # Security settings
+  security:
+    # Allowed commands (regex patterns)
+    allowed_commands:
+      - "^systemctl.*"
+      - "^journalctl.*"
+      - "^ls.*"
+      - "^cat.*"
+      - "^df.*"
+      - "^free.*"
+      - "^top.*"
+      - "^ps.*"
+      
+    # Blocked commands (takes precedence)
+    blocked_commands:
+      - "^rm -rf /.*"
+      - "^dd.*"
+      - "^mkfs.*"
+      - "^fdisk.*"
+      
+    # File transfer restrictions
+    file_transfer:
+      allowed_paths:
+        - "/var/log"
+        - "/tmp"
+        - "/opt/app"
+      blocked_paths:
+        - "/etc/shadow"
+        - "/etc/passwd"
+        - "~/.ssh"
+      max_file_size: "100MB"
+
+# Native module settings
+native:
+  enabled: true
+  library_path: ""  # Auto-detect if empty
+
+# Logging
+logging:
+  level: "info"
+  format: "json"
+  output: "stdout"
+  file: "logs/agent.log"
+
+# Resource limits
+resources:
+  max_cpu_percent: 10
+  max_memory_mb: 256
+  max_concurrent_commands: 5

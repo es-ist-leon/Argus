@@ -1,0 +1,9 @@
+@include_guard()
+
+if(TARGET argus::argus_sysinfo)
+    return()
+endif()
+
+set(_ARGUS_NATIVE_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/argus_native_targets.cmake")
